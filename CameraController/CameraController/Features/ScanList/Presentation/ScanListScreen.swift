@@ -5,11 +5,41 @@ struct ScanListScreen: View {
 
     var body: some View {
         VStack {
-            Button("Start scan") {
-                viewModel.startScan()
-            }
-            List(viewModel.peripherals, id: \.id) {
-                Text($0.id.uuidString)
+            if let peripheral = viewModel.connectedPeripheral {
+                Spacer()
+                HStack(spacing: 20) {
+                    Button("On") {
+                        viewModel.setCamera(on: true)
+                    }
+                    Button("Off") {
+                        viewModel.setCamera(on: false)
+                    }
+                    Button("Take photo") {
+                        viewModel.takePhoto()
+                    }
+                }
+                Spacer()
+                Text("\(peripheral.id)")
+                Spacer()
+                Button("Disconnect") {
+                    viewModel.disconnect(peripheral: peripheral)
+                }
+                Spacer()
+            } else {
+                if viewModel.scanning {
+                    Button("Stop scan") {
+                        viewModel.stopScan()
+                    }
+                    List(viewModel.peripherals, id: \.id) { peripheral in
+                        Text(peripheral.id.uuidString).onTapGesture {
+                            viewModel.connect(peripheral)
+                        }
+                    }
+                } else {
+                    Button("Start scan") {
+                        viewModel.startScan()
+                    }
+                }
             }
         }
     }
