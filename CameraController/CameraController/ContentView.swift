@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var bleScanMananger: BleScanManager = BleScanManager()
+
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Button("Start scan") {
+                bleScanMananger.startScan()
+            }
+            List(bleScanMananger.scanResults, id: \.identifier) {
+                Text($0.identifier.uuidString)
+            }
         }
-        .padding()
     }
 }
 

@@ -12,6 +12,10 @@
 		BF2051542A0D18EE00AD6854 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051532A0D18EE00AD6854 /* ContentView.swift */; };
 		BF2051562A0D18F000AD6854 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2051552A0D18F000AD6854 /* Assets.xcassets */; };
 		BF2051592A0D18F000AD6854 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2051582A0D18F000AD6854 /* Preview Assets.xcassets */; };
+		BF2051622A0D2CCE00AD6854 /* BleScanMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051612A0D2CCE00AD6854 /* BleScanMananger.swift */; };
+		BF2051652A0D348100AD6854 /* CombineCoreBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = BF2051642A0D348100AD6854 /* CombineCoreBluetooth */; };
+		BF20516A2A0D34B800AD6854 /* ScanListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051692A0D34B800AD6854 /* ScanListViewModel.swift */; };
+		BF20516C2A0D367600AD6854 /* ScanListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20516B2A0D367600AD6854 /* ScanListScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +25,9 @@
 		BF2051532A0D18EE00AD6854 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BF2051552A0D18F000AD6854 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF2051582A0D18F000AD6854 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BF2051612A0D2CCE00AD6854 /* BleScanMananger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleScanMananger.swift; sourceTree = "<group>"; };
+		BF2051692A0D34B800AD6854 /* ScanListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanListViewModel.swift; sourceTree = "<group>"; };
+		BF20516B2A0D367600AD6854 /* ScanListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanListScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF2051652A0D348100AD6854 /* CombineCoreBluetooth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +61,7 @@
 		2C56D30C2A0D1D4B0074A790 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				BF2051602A0D2CBF00AD6854 /* BLE */,
 				2C56D30D2A0D1D6C0074A790 /* BleService.swift */,
 			);
 			path = Remote;
@@ -77,6 +86,7 @@
 		BF2051502A0D18EE00AD6854 /* CameraController */ = {
 			isa = PBXGroup;
 			children = (
+				BF2051662A0D348A00AD6854 /* Features */,
 				2C56D30A2A0D1CF50074A790 /* Core */,
 				BF2051512A0D18EE00AD6854 /* CameraControllerApp.swift */,
 				BF2051532A0D18EE00AD6854 /* ContentView.swift */,
@@ -92,6 +102,39 @@
 				BF2051582A0D18F000AD6854 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BF2051602A0D2CBF00AD6854 /* BLE */ = {
+			isa = PBXGroup;
+			children = (
+				BF2051612A0D2CCE00AD6854 /* BleScanMananger.swift */,
+			);
+			path = BLE;
+			sourceTree = "<group>";
+		};
+		BF2051662A0D348A00AD6854 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				BF2051672A0D349600AD6854 /* ScanList */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		BF2051672A0D349600AD6854 /* ScanList */ = {
+			isa = PBXGroup;
+			children = (
+				BF2051682A0D34AB00AD6854 /* Presentation */,
+			);
+			path = ScanList;
+			sourceTree = "<group>";
+		};
+		BF2051682A0D34AB00AD6854 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				BF2051692A0D34B800AD6854 /* ScanListViewModel.swift */,
+				BF20516B2A0D367600AD6854 /* ScanListScreen.swift */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,6 +153,9 @@
 			dependencies = (
 			);
 			name = CameraController;
+			packageProductDependencies = (
+				BF2051642A0D348100AD6854 /* CombineCoreBluetooth */,
+			);
 			productName = CameraController;
 			productReference = BF20514E2A0D18EE00AD6854 /* CameraController.app */;
 			productType = "com.apple.product-type.application";
@@ -138,6 +184,9 @@
 				Base,
 			);
 			mainGroup = BF2051452A0D18EE00AD6854;
+			packageReferences = (
+				BF2051632A0D348100AD6854 /* XCRemoteSwiftPackageReference "CombineCoreBluetooth" */,
+			);
 			productRefGroup = BF20514F2A0D18EE00AD6854 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -165,7 +214,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C56D30E2A0D1D6C0074A790 /* BleService.swift in Sources */,
+				BF2051622A0D2CCE00AD6854 /* BleScanMananger.swift in Sources */,
+				BF20516A2A0D34B800AD6854 /* ScanListViewModel.swift in Sources */,
 				BF2051542A0D18EE00AD6854 /* ContentView.swift in Sources */,
+				BF20516C2A0D367600AD6854 /* ScanListScreen.swift in Sources */,
 				BF2051522A0D18EE00AD6854 /* CameraControllerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -223,7 +275,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -277,7 +329,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -292,11 +344,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CameraController/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 9KPQV995W2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Scan for devices";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -309,6 +365,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.trifork.CameraController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Trifork iOS Wildcard Development";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -320,11 +378,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CameraController/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 9KPQV995W2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Scan for devices";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -337,6 +399,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.trifork.CameraController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Trifork iOS Wildcard Development";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -365,6 +429,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BF2051632A0D348100AD6854 /* XCRemoteSwiftPackageReference "CombineCoreBluetooth" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/StarryInternet/CombineCoreBluetooth.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF2051642A0D348100AD6854 /* CombineCoreBluetooth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF2051632A0D348100AD6854 /* XCRemoteSwiftPackageReference "CombineCoreBluetooth" */;
+			productName = CombineCoreBluetooth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF2051462A0D18EE00AD6854 /* Project object */;
 }
