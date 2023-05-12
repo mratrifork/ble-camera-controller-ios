@@ -7,25 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C56D30E2A0D1D6C0074A790 /* BleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C56D30D2A0D1D6C0074A790 /* BleService.swift */; };
 		BF2051522A0D18EE00AD6854 /* CameraControllerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051512A0D18EE00AD6854 /* CameraControllerApp.swift */; };
-		BF2051542A0D18EE00AD6854 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051532A0D18EE00AD6854 /* ContentView.swift */; };
 		BF2051562A0D18F000AD6854 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2051552A0D18F000AD6854 /* Assets.xcassets */; };
 		BF2051592A0D18F000AD6854 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2051582A0D18F000AD6854 /* Preview Assets.xcassets */; };
-		BF2051622A0D2CCE00AD6854 /* BleScanMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051612A0D2CCE00AD6854 /* BleScanMananger.swift */; };
 		BF20516A2A0D34B800AD6854 /* ScanListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051692A0D34B800AD6854 /* ScanListViewModel.swift */; };
 		BF20516C2A0D367600AD6854 /* ScanListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20516B2A0D367600AD6854 /* ScanListScreen.swift */; };
 		BF20516F2A0D666800AD6854 /* BLECombineKit in Frameworks */ = {isa = PBXBuildFile; productRef = BF20516E2A0D666800AD6854 /* BLECombineKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2C56D30D2A0D1D6C0074A790 /* BleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleService.swift; sourceTree = "<group>"; };
 		BF20514E2A0D18EE00AD6854 /* CameraController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF2051512A0D18EE00AD6854 /* CameraControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControllerApp.swift; sourceTree = "<group>"; };
-		BF2051532A0D18EE00AD6854 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BF2051552A0D18F000AD6854 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF2051582A0D18F000AD6854 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		BF2051612A0D2CCE00AD6854 /* BleScanMananger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleScanMananger.swift; sourceTree = "<group>"; };
 		BF2051692A0D34B800AD6854 /* ScanListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanListViewModel.swift; sourceTree = "<group>"; };
 		BF20516B2A0D367600AD6854 /* ScanListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanListScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -42,31 +36,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2C56D30A2A0D1CF50074A790 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				2C56D30B2A0D1D460074A790 /* Data */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		2C56D30B2A0D1D460074A790 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				2C56D30C2A0D1D4B0074A790 /* Remote */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		2C56D30C2A0D1D4B0074A790 /* Remote */ = {
-			isa = PBXGroup;
-			children = (
-				BF2051602A0D2CBF00AD6854 /* BLE */,
-				2C56D30D2A0D1D6C0074A790 /* BleService.swift */,
-			);
-			path = Remote;
-			sourceTree = "<group>";
-		};
 		BF2051452A0D18EE00AD6854 = {
 			isa = PBXGroup;
 			children = (
@@ -87,9 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				BF2051662A0D348A00AD6854 /* Features */,
-				2C56D30A2A0D1CF50074A790 /* Core */,
 				BF2051512A0D18EE00AD6854 /* CameraControllerApp.swift */,
-				BF2051532A0D18EE00AD6854 /* ContentView.swift */,
 				BF2051552A0D18F000AD6854 /* Assets.xcassets */,
 				BF2051572A0D18F000AD6854 /* Preview Content */,
 			);
@@ -102,14 +69,6 @@
 				BF2051582A0D18F000AD6854 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		BF2051602A0D2CBF00AD6854 /* BLE */ = {
-			isa = PBXGroup;
-			children = (
-				BF2051612A0D2CCE00AD6854 /* BleScanMananger.swift */,
-			);
-			path = BLE;
 			sourceTree = "<group>";
 		};
 		BF2051662A0D348A00AD6854 /* Features */ = {
@@ -213,10 +172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C56D30E2A0D1D6C0074A790 /* BleService.swift in Sources */,
-				BF2051622A0D2CCE00AD6854 /* BleScanMananger.swift in Sources */,
 				BF20516A2A0D34B800AD6854 /* ScanListViewModel.swift in Sources */,
-				BF2051542A0D18EE00AD6854 /* ContentView.swift in Sources */,
 				BF20516C2A0D367600AD6854 /* ScanListScreen.swift in Sources */,
 				BF2051522A0D18EE00AD6854 /* CameraControllerApp.swift in Sources */,
 			);
