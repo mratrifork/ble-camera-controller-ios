@@ -1,148 +1,200 @@
 import Foundation
 import Combine
-import CombineCoreBluetooth
+import CoreBluetooth
+import BLECombineKit
 
-class ScanListViewModel: ObservableObject {
-    @Published var peripherals: [PeripheralDiscovery] = []
-    @Published var connectedPeripheral: Peripheral? = nil
-    @Published var scanning: Bool = false
-    @Published var services = [CBService]()
-    @Published var characteristics = [CBCharacteristic]()
+struct Camera: Codable {
+    let manufacturer: String
+    let model: String
+    let serialNumber: String
 
-    let centralManager: CentralManager = .live()
-    let peripheralManager: PeripheralManager = PeripheralManager.live
-    var scanTask: AnyCancellable?
-    var cancellables: Set<AnyCancellable> = []
-    
-    init() {
-        centralManager.didDisconnectPeripheral
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] peripheral, error in
-                if let error = error {
-                    self?.reset()
-                } else {
-                    self?.reset()
-                }
-            })
-            .store(in: &cancellables)
+    var isConnected: Bool {
+        !["UKNOWN", "1234"].contains(serialNumber)
     }
 
+    enum CodingKeys: String, CodingKey {
+        case manufacturer
+        case model
+        case serialNumber = "serial_numer"
+    }
+}
+
+enum ScanListUiState {
+    case idle, scanning, connecting, connected(Camera), error(String)
+}
+
+class ScanListViewModel: ObservableObject {
+    @Published var uiState: ScanListUiState = .idle
+    @Published var connectedPeripheral: BLEPeripheral? = nil
+    @Published var characteristics = [BLECharacteristic]()
+
+    let centralManager: BLECentralManager = BLECombineKit.buildCentralManager(with: CBCentralManager())
+
+    var scanTask: AnyCancellable?
+    var cancellables: Set<AnyCancellable> = []
+
     func startScan() {
-        scanTask = centralManager.scanForPeripherals(withServices: [CameraPeripheral.Services.controller.uuid])
-            .scan([], { list, discovery -> [PeripheralDiscovery] in
-                guard !list.contains(where: { $0.id == discovery.id }) else { return list }
-                return list + [discovery]
-            })
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] in
-                self?.peripherals = $0
-            })
-        self.scanning = centralManager.isScanning
+        uiState = .scanning
+        print("Start scanning")
+        centralManager
+//            .scanForPeripherals(withServices: nil, options: nil)
+            .scanForPeripherals(withServices: [CameraPeripheral.Services.controller.uuid], options: nil)
+            .first()
+            .sink(
+                receiveCompletion: {_ in
+                    print("Scan completed")
+                },
+                receiveValue: { scanResult in
+                    print("Scan result \(scanResult)")
+                    self.startConnect(scanResult: scanResult)
+                }
+            ).store(in: &cancellables)
     }
 
     func stopScan() {
-        scanTask = nil
-        peripherals = []
-        self.scanning = centralManager.isScanning
+        centralManager.stopScan()
+        print("Stop scan")
+        reset()
     }
 
-    func reset() {
-        stopScan()
-        connectedPeripheral = nil
-    }
-
-    func disconnect(peripheral: Peripheral) {
-        centralManager.cancelPeripheralConnection(peripheral)
-    }
-
-    func connect(_ discovery: PeripheralDiscovery) {
-        centralManager.connect(discovery.peripheral)
-            .map(Result.success)
-            .catch({ Just(Result.failure($0)) })
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { result in
-                    switch (result) {
-                    case .success(let peripheral):
-                        self.connectedPeripheral = peripheral
-                        self.readServices(peripheral: peripheral)
-                    case .failure(let error):
-                        print("Failed to connect with error \(error.localizedDescription)")
-                        self.reset()
-                    }
-                })
-                    .store(in: &cancellables)
-    }
-
-    private func readServices(peripheral: Peripheral) {
-        peripheral.discoverServices([CameraPeripheral.Services.controller.uuid])
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in }, receiveValue: { services in
-                guard let service = services.first else { return }
-                self.readCharacteristics(peripheral: peripheral, service: service)
-            }).store(in: &cancellables)
-    }
-
-    private func readCharacteristics(peripheral: Peripheral, service: CBService) {
-        peripheral.discoverCharacteristics(CameraPeripheral.Characteristics.allCases.map { $0.uuid }, for: service).receive(on: DispatchQueue.main).sink(receiveCompletion: {_ in }, receiveValue: { characteristics in
-            print("characteristics \(characteristics)")
-
-            self.characteristics = characteristics
-            self.readCameraState()
-
-            characteristics.forEach { characteristic in
-                if characteristic.uuid == CameraPeripheral.Characteristics.camera.uuid {
-                    peripheral.listenForUpdates(on: characteristic).receive(on: DispatchQueue.main).sink(receiveCompletion: {_ in }, receiveValue: { data in
-                        guard let data = data else { return }
-                        print(String(data: data, encoding: .utf8))
-                    }).store(in: &self.cancellables)
-
-                    peripheral.setNotifyValue(true, for: characteristic).receive(on: DispatchQueue.main).sink(receiveCompletion: { completion in
-                        print(completion)
-                    }, receiveValue: {
-                        print("did enable notify")
-                    }).store(in: &self.cancellables)
+    private func startConnect(scanResult: BLEScanResult) {
+        uiState = .connecting
+        print("Start connecting \(scanResult)")
+        scanResult
+            .peripheral
+            .connect(with: [:])
+            .sink(
+                receiveCompletion: { _ in
+                    print("Connect completed")
+                },
+                receiveValue: { peripheral in
+                    print("Connected peripheral \(peripheral)")
+                    self.connectedPeripheral = peripheral
+                    self.startDiscoveringServices(peripheral: peripheral)
+                    self.startObserveringConnectionState(peripheral: peripheral)
                 }
-            }
-        }).store(in: &self.cancellables)
+            ).store(in: &cancellables)
     }
 
-    func readCameraState() {
-        guard let characteristic = characteristics.first(where: { $0.uuid == CameraPeripheral.Characteristics.camera.uuid }), let peripheral = connectedPeripheral else { return }
+    func disconnect() {
+        guard let peripheral = connectedPeripheral else { return }
+        centralManager
+            .cancelPeripheralConnection(peripheral.peripheral)
+            .sink { _ in
+                print("Disconnected")
+                self.reset()
+            } receiveValue: { _ in }
+            .store(in: &cancellables)
 
-        peripheral.readValue(for: characteristic).receive(on: DispatchQueue.main).sink(receiveCompletion: { _ in }, receiveValue: { data in
-            print("received data \(data) for characteristic \(characteristic.uuid)")
-
-            guard let data = data, let value = String(data: data, encoding: .utf8) else { return }
-            print("did read value \(value) for characteristic \(characteristic.uuid)")
-        }).store(in: &cancellables)
+        peripheral.disconnect()
     }
 
-    func setCamera(on: Bool) {
-        guard let characteristic = characteristics.first(where: { $0.uuid == CameraPeripheral.Characteristics.command.uuid }), let peripheral = connectedPeripheral else { return }
+    private func reset() {
+        uiState = .idle
+        connectedPeripheral = nil
+        characteristics = []
+        cancellables = []
+    }
 
-        if on {
-            peripheral.writeValue(Data([1]), for: characteristic, type: .withResponse).sink(receiveCompletion: { _ in
-                print("did write value 1 finished")
-            }, receiveValue: {
-                print("did write value 1")
-            }).store(in: &cancellables)
-        } else {
-            peripheral.writeValue(Data([2]), for: characteristic, type: .withResponse).sink(receiveCompletion: { _ in
-                print("did write value 2 finished")
-            }, receiveValue: {
-                print("did write value 2")
-            }).store(in: &cancellables)
-        }
+    func connectCamera() {
+        write(value: Data([1]), for: CameraPeripheral.Characteristics.command.uuid)
+    }
+
+    func disconnectCamera() {
+        write(value: Data([2]), for: CameraPeripheral.Characteristics.command.uuid)
     }
 
     func takePhoto() {
-        guard let characteristic = characteristics.first(where: { $0.uuid == CameraPeripheral.Characteristics.command.uuid }), let peripheral = connectedPeripheral else { return }
+        write(value: Data([3]), for: CameraPeripheral.Characteristics.command.uuid)
+    }
 
-        peripheral.writeValue(Data([3]), for: characteristic, type: .withResponse).sink(receiveCompletion: { _ in
-            print("did write value 3 finished")
-        }, receiveValue: {
-            print("did write value 3")
-        }).store(in: &cancellables)
+    private func startObservingCamera() {
+        guard
+            let characteristic = characteristics.first(where: { $0.value.uuid == CameraPeripheral.Characteristics.camera.uuid })
+        else { return }
+
+        characteristic.observeValueUpdateAndSetNotification()
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                print("Finished receiving values")
+            } receiveValue: { data in
+                print("received notification")
+            }
+            .store(in: &cancellables)
+
+        characteristic.observeValue()
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                print("Finished receiving values")
+            } receiveValue: { data in
+                print("Received camera data:\n\(data.value)")
+
+                if let camera = try? JSONDecoder().decode(Camera.self, from: data.value) {
+                    print("Parsed camera data \(camera)")
+                    self.uiState = .connected(camera)
+                } else {
+                    print("Failed to parse camera data")
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func write(value: Data, for uuid: CBUUID) {
+        guard
+            let characteristic = characteristics.first(where: { $0.value.uuid == uuid })
+        else { return }
+
+        characteristic
+            .writeValue(value, type: .withResponse)
+            .sink { _ in
+                print("did write value \(value) for characteristic \(characteristic.value)")
+            } receiveValue: { _ in }
+            .store(in: &cancellables)
+
+    }
+
+    private func startObserveringConnectionState(peripheral: BLEPeripheral) {
+        peripheral
+            .observeConnectionState()
+            .sink { connected in
+                print("Observing connection - Connected = \(connected)")
+
+                if (!connected) {
+                    self.reset()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func startDiscoveringServices(peripheral: BLEPeripheral) {
+        peripheral
+//            .discoverServices(serviceUUIDs: nil)
+            .discoverServices(serviceUUIDs: [CameraPeripheral.Services.controller.uuid])
+            .sink(
+                receiveCompletion: {_ in
+                    print("Discover services completed")
+                },
+                receiveValue: { service in
+                    print("Discovered service \(service)")
+                    self.startDiscoveringCharacteristics(peripheral: peripheral, service: service)
+                })
+            .store(in: &cancellables)
+    }
+
+    private func startDiscoveringCharacteristics(peripheral: BLEPeripheral, service: BLEService) {
+        service
+//            .discoverCharacteristics(characteristicUUIDs: nil)
+            .discoverCharacteristics(characteristicUUIDs: CameraPeripheral.Characteristics.allCases.map { $0.uuid })
+            .sink(
+                receiveCompletion: {_ in
+                    print("Discover characteristics completed for service \(service)")
+                    self.startObservingCamera()
+                },
+                receiveValue: { characteristic in
+                    print("Dicovered characteristic \(characteristic) for service \(service)")
+                    self.characteristics.append(characteristic)
+                })
+            .store(in: &cancellables)
     }
 }
 

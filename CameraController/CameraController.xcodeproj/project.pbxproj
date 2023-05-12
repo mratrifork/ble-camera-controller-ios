@@ -13,9 +13,9 @@
 		BF2051562A0D18F000AD6854 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2051552A0D18F000AD6854 /* Assets.xcassets */; };
 		BF2051592A0D18F000AD6854 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF2051582A0D18F000AD6854 /* Preview Assets.xcassets */; };
 		BF2051622A0D2CCE00AD6854 /* BleScanMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051612A0D2CCE00AD6854 /* BleScanMananger.swift */; };
-		BF2051652A0D348100AD6854 /* CombineCoreBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = BF2051642A0D348100AD6854 /* CombineCoreBluetooth */; };
 		BF20516A2A0D34B800AD6854 /* ScanListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2051692A0D34B800AD6854 /* ScanListViewModel.swift */; };
 		BF20516C2A0D367600AD6854 /* ScanListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20516B2A0D367600AD6854 /* ScanListScreen.swift */; };
+		BF20516F2A0D666800AD6854 /* BLECombineKit in Frameworks */ = {isa = PBXBuildFile; productRef = BF20516E2A0D666800AD6854 /* BLECombineKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF2051652A0D348100AD6854 /* CombineCoreBluetooth in Frameworks */,
+				BF20516F2A0D666800AD6854 /* BLECombineKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,7 +154,7 @@
 			);
 			name = CameraController;
 			packageProductDependencies = (
-				BF2051642A0D348100AD6854 /* CombineCoreBluetooth */,
+				BF20516E2A0D666800AD6854 /* BLECombineKit */,
 			);
 			productName = CameraController;
 			productReference = BF20514E2A0D18EE00AD6854 /* CameraController.app */;
@@ -185,7 +185,7 @@
 			);
 			mainGroup = BF2051452A0D18EE00AD6854;
 			packageReferences = (
-				BF2051632A0D348100AD6854 /* XCRemoteSwiftPackageReference "CombineCoreBluetooth" */,
+				BF20516D2A0D666800AD6854 /* XCRemoteSwiftPackageReference "BLECombineKit" */,
 			);
 			productRefGroup = BF20514F2A0D18EE00AD6854 /* Products */;
 			projectDirPath = "";
@@ -431,21 +431,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BF2051632A0D348100AD6854 /* XCRemoteSwiftPackageReference "CombineCoreBluetooth" */ = {
+		BF20516D2A0D666800AD6854 /* XCRemoteSwiftPackageReference "BLECombineKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/StarryInternet/CombineCoreBluetooth.git";
+			repositoryURL = "https://github.com/Henryforce/BLECombineKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.0;
+				minimumVersion = 0.1.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BF2051642A0D348100AD6854 /* CombineCoreBluetooth */ = {
+		BF20516E2A0D666800AD6854 /* BLECombineKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BF2051632A0D348100AD6854 /* XCRemoteSwiftPackageReference "CombineCoreBluetooth" */;
-			productName = CombineCoreBluetooth;
+			package = BF20516D2A0D666800AD6854 /* XCRemoteSwiftPackageReference "BLECombineKit" */;
+			productName = BLECombineKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
